@@ -22,7 +22,7 @@
 //#define DEBUG
 
 
-static const char  *g_version = "v1.2";
+static const char  *g_version = "v1.0";
 
 enum
 {
@@ -333,45 +333,23 @@ Result http_download(const char *url, u8 **output, u32 *outSize)
 int    CreateFiles(void *buffer, u32 size)
 {
     struct stat st = {0};
-
+	
     FILE *usa;
-    FILE *eur;
-    FILE *jap;
 
-
-    if (stat("sdmc:/plugin/0004000000086200", &st) == -1) 
+    if (stat("sdmc:/plugin/000400000019F500", &st) == -1) 
     {
-        mkdir("sdmc:/plugin/0004000000086200", 0700);
-    }
-    if (stat("sdmc:/plugin/0004000000086300", &st) == -1) 
-    {
-        mkdir("sdmc:/plugin/0004000000086300", 0700);
-    }
-    if (stat("sdmc:/plugin/0004000000086400", &st) == -1) 
-    {
-        mkdir("sdmc:/plugin/0004000000086400", 0700);
+        mkdir("sdmc:/plugin/000400000019F500", 0700);
     }
 
-    // Delete any existing plugins in the USA, EUR or JAP directory
-    remove("sdmc:/plugin/0004000000086300/ACNL_Multi.plg");
-    remove("sdmc:/plugin/0004000000086200/ACNL_Multi.plg");
-    remove("sdmc:/plugin/0004000000086400/ACNL_Multi.plg");
-    remove("sdmc:/plugin/0004000000086300/ACNL_Multi_USA.plg");
-    remove("sdmc:/plugin/0004000000086200/ACNL_Multi_JAP.plg");
-    remove("sdmc:/plugin/0004000000086400/ACNL_Multi_EUR.plg");
-
+    // Delete any existing plugins
+    remove("sdmc:/plugin/000400000019F500/Story_of_Seasons_Trio_of_Towns.plg");
+	
     if (!buffer)
         return (-1);
 
-    usa = fopen("sdmc:/plugin/0004000000086300/ACNL_MULTI.plg", "w+");
+    usa = fopen("sdmc:/plugin/000400000019F500/Story_of_Seasons_Trio_of_Towns.plg", "w+");
     fwrite(buffer, 1, size, usa);
     fclose(usa);
-    eur = fopen("sdmc:/plugin/0004000000086400/ACNL_MULTI.plg", "w+");
-    fwrite(buffer, 1, size, eur);
-    fclose(eur);
-    jap = fopen("sdmc:/plugin/0004000000086200/ACNL_MULTI.plg", "w+");
-    fwrite(buffer, 1, size, jap);
-    fclose(jap);
 
     // Free buffer
     free(buffer);
@@ -381,15 +359,13 @@ int    CreateFiles(void *buffer, u32 size)
 
 int    DownloadPlugin(int version)
 {
-    static const  char *urls[2] = 
+    static const  char *urls[1] = 
     {
-        "https://github.com/RyDog199/ACNL-NTR-Cheats/blob/master/ACNL_MULTI.plg?raw=true",
-        "https://github.com/RyDog199/ACNL-NTR-Cheats/releases/download/v3.0B1/ACNL_MULTI.plg"
+        "https://github.com/KunoichiZ/3OT-NTR-Plugin/blob/master/Story_of_Seasons_Trio_of_Towns.plg?raw=true",
     };
-    static const  char *downloadVersion[2] = 
+    static const  char *downloadVersion[1] = 
     {
-        "Updating plugin to the last version...\n\n",
-        "Downloading 3.0 Beta...\n\n"
+        "Updating plugin to the last version...\n\n"
     };
 
     u8      *buffer = NULL;
@@ -518,7 +494,7 @@ int     downloadUpdate(void)
     jsmntok_t       tokens[128];
 
 
-    if (!http_download("https://api.github.com/repos/RyDog199/plugin-downloader/releases/latest", (u8 *)&json, &size))
+    if (!http_download("https://api.github.com/repos/KunoichiZ/3OT-plugin-downloader/releases/latest", (u8 *)&json, &size))
     {
         jsmn_init(&jParser);
         r = jsmn_parse(&jParser, json, size, tokens, sizeof(tokens)/sizeof(tokens[0]));
@@ -590,9 +566,8 @@ int main()
 
     consoleInit(GFX_TOP,NULL);
 
-    printf("--- ACNL Multi NTR Plugin Downloader %s ---\n\n", g_version);
+    printf("--- Story of Seasons: Trio of Towns NTR Plugin Downloader %s ---\n\n", g_version);
     printf("Press A to download the latest version \n");
-    printf("Press B to download 3.0 beta (for people without\nthe Amiibo update) \n");
     printf("Press Y to check for updates.\n");
     printf("Press Start to exit.\n\n");
     //check for an update
@@ -619,14 +594,6 @@ int main()
         if (kDown == KEY_A)
         {
             if (!DownloadPlugin(Latest))
-            {
-                printf("Returning to homemenu...\n");
-                isRunning = false;
-            }
-        }
-        if (kDown == KEY_B)
-        {
-            if (!DownloadPlugin(Beta3))
             {
                 printf("Returning to homemenu...\n");
                 isRunning = false;
