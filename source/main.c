@@ -22,7 +22,7 @@
 //#define DEBUG
 
 
-static const char  *g_version = "v1.0";
+static const char  *g_version = "v1.2";
 
 enum
 {
