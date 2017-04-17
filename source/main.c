@@ -22,7 +22,7 @@
 //#define DEBUG
 
 
-static const char  *g_version = "v1.2";
+static const char  *g_version = "v1.3";
 
 enum
 {
@@ -569,7 +569,7 @@ int main()
 
     printf("--- Story of Seasons: Trio of Towns NTR Plugin Downloader %s ---\n\n", g_version);
     printf("Press A to download the latest version \n");
-    printf("Press Y to check for updates.\n");
+    // printf("Press Y to check for updates.\n");
     printf("Press Start to exit.\n\n");
     //check for an update
     
@@ -586,11 +586,11 @@ int main()
 
         u32 kDown = hidKeysDown();
 
-        if (kDown == KEY_Y)
+        /*if (kDown == KEY_Y)
         {
             printf("Checking for an update...");
             downloadUpdate();
-        }
+        }*/
 
         if (kDown == KEY_A)
         {
