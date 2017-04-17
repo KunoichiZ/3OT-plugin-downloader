@@ -343,6 +343,7 @@ int    CreateFiles(void *buffer, u32 size)
 
     // Delete any existing plugins
     remove("sdmc:/plugin/000400000019F500/Story_of_Seasons_Trio_of_Towns.plg");
+	remove("sdmc:/plugin/000400000019F500/000400000019F500.plg");
 	
     if (!buffer)
         return (-1);
